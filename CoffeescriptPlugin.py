@@ -8,11 +8,11 @@ import sys
 import sublime
 import sublime_plugin
 
-# fix for import order
+if int(sublime.version()) < 3000:
+    import LiveReload
+else:
+    from . import LiveReload
 
-sys.path.append(os.path.join(sublime.packages_path(), 'LiveReload'))
-LiveReload = __import__('LiveReload')
-sys.path.remove(os.path.join(sublime.packages_path(), 'LiveReload'))
 
 
 class CoffeeThread(threading.Thread):
@@ -20,10 +20,10 @@ class CoffeeThread(threading.Thread):
     def getLocalOverride(self):
         """
         You can override defaults in sublime-project file
-        
+
         Discussion: https://github.com/dz0ny/LiveReload-sublimetext2/issues/43
-        
-        Example: 
+
+        Example:
 
             "settings": {
               "coffee": {

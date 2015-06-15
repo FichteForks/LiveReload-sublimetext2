@@ -6,11 +6,10 @@ import sys
 import sublime
 import sublime_plugin
 
-# fix for import order
-
-sys.path.append(os.path.join(sublime.packages_path(), 'LiveReload'))
-LiveReload = __import__('LiveReload')
-sys.path.remove(os.path.join(sublime.packages_path(), 'LiveReload'))
+if int(sublime.version()) < 3000:
+    import LiveReload
+else:
+    from . import LiveReload
 
 ##Modlue name must be the same as class or else callbacks won't work
 class SimpleWSCallback(LiveReload.Plugin, sublime_plugin.EventListener):
@@ -26,6 +25,6 @@ class SimpleWSCallback(LiveReload.Plugin, sublime_plugin.EventListener):
         region = sublime.Region(0, view.size())
         source = view.substr(region)
         self.sendRaw("socket", source)
-        
+
     def onReceive(self, data, origin):
       print(data)

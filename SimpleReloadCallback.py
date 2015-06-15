@@ -6,11 +6,10 @@ import sys
 import sublime
 import sublime_plugin
 
-# fix for import order
-
-sys.path.append(os.path.join(sublime.packages_path(), 'LiveReload'))
-LiveReload = __import__('LiveReload')
-sys.path.remove(os.path.join(sublime.packages_path(), 'LiveReload'))
+if int(sublime.version()) < 3000:
+    import LiveReload
+else:
+    from . import LiveReload
 
 ##Modlue name must be the same as class or else callbacks won't work
 class SimpleReloadCallback(LiveReload.Plugin):
